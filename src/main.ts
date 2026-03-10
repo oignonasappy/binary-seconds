@@ -10,11 +10,13 @@ const ctx = canvas.getContext("2d")!;
 
 const dpr = window.devicePixelRatio || 1;
 
+const url = new URL(window.location.href);
+const BITS = url.searchParams.get("64bit") !== null ? 64 : 32;
+
 setInterval(() => {
   canvas.width = canvas.getBoundingClientRect().width * dpr;
   canvas.height = canvas.getBoundingClientRect().height * dpr;
 
-  const BITS = 32;
   const { sideLength, rows, cols } = findBestPacking(BITS, canvas.width, canvas.height)
 
   const seconds = Math.round(Date.now() / 1000);
