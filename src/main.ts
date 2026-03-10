@@ -3,20 +3,6 @@ import './style.css'
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
-console.log(
-  `new Date(): ${new Date()}\n` +
-  `new Date().getTime(): ${new Date().getTime()}\n` +
-  `new Date().getSeconds(): ${new Date().getSeconds()}\n` +
-  `new Date().getUTCSeconds(): ${new Date().getUTCSeconds()}\n` +
-  `new Date().getTime() / 1000: ${new Date().getTime() / 1000}\n` +
-  `Math.log2(new Date().getTime() / 1000): ${Math.log2(new Date().getTime() / 1000)}`
-);
-
-// ここで、32個の全てが同じ大きさの正方形を、決められた並べ方で、与えられた広さの長方形の空間に最大限広く敷き詰めるには？そしてそれをプログラムで求めるには？
-// 正方形の1つあたりの大きさは自由に決まる。
-// 正方形の敷き詰め方は、必ず均一にn×nの長方形の形に並べる。つまりは1×32,2×16,4×8,8×4,16×2,32×1のどれかである...
-// ...って、これらの敷き詰め方の中で最も広く並べられるものを探すだけか。
-
 const canvas = document.createElement("canvas");
 app.appendChild(canvas);
 
@@ -28,14 +14,31 @@ setInterval(() => {
   canvas.width = canvas.getBoundingClientRect().width * dpr;
   canvas.height = canvas.getBoundingClientRect().height * dpr;
 
-  const { sideLength, rows, cols, totalArea } = findBestPacking(32, canvas.width, canvas.height)
-  console.log(
-    `sideLength: ${sideLength}\n` +
-    `rows: ${rows}\n` +
-    `cols: ${cols}\n` +
-    `totalArea: ${totalArea}`
-  );
+  const BITS = 32;
+  const { sideLength, rows, cols } = findBestPacking(BITS, canvas.width, canvas.height)
+
+  const seconds = Math.round(Date.now() / 1000);
+  // const seconds = Math.round(new Date("2038-01-19 12:14:07").getTime() / 1000);
+  // const seconds = Math.round(new Date("2038-01-19 12:14:08").getTime() / 1000);
 
   ctx.fillStyle = "#fff";
-  ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 4, 4);
+  for (let i = 0; i < BITS; i++) {
+    if (seconds & Math.pow(2, i)) {
+      ctx.fillRect(
+        canvas.width / 2 - sideLength * cols / 2 + sideLength * (i % cols),
+        canvas.height / 2 - sideLength * rows / 2 + sideLength * Math.floor(i / cols),
+        sideLength,
+        sideLength
+      );
+    }
+  }
+
+  ctx.fillStyle = "#f44";
+  ctx.fillRect(
+    canvas.width / 2 - sideLength * cols / 2 + sideLength * (cols - 1),
+    canvas.height / 2 - sideLength * rows / 2 + sideLength * (rows - 1),
+    sideLength,
+    sideLength
+  );
+
 }, 1000);
