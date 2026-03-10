@@ -25,20 +25,20 @@ setInterval(() => {
   for (let i = 0; i < BITS; i++) {
     if (seconds & Math.pow(2, i)) {
       ctx.fillRect(
-        canvas.width / 2 - sideLength * cols / 2 + sideLength * (i % cols),
-        canvas.height / 2 - sideLength * rows / 2 + sideLength * Math.floor(i / cols),
-        sideLength,
-        sideLength
+        canvas.width / 2 - sideLength * cols / 2 + sideLength * (i % cols) - 1,
+        canvas.height / 2 - sideLength * rows / 2 + sideLength * Math.floor(i / cols) - 1,
+        sideLength + 2,
+        sideLength + 2
       );
     }
   }
 
   ctx.fillStyle = "#f44";
   ctx.fillRect(
-    canvas.width / 2 - sideLength * cols / 2 + sideLength * (cols - 1),
-    canvas.height / 2 - sideLength * rows / 2 + sideLength * (rows - 1),
-    sideLength,
-    sideLength
+    canvas.width / 2 - sideLength * cols / 2 + sideLength * (cols - 1) - 1,
+    canvas.height / 2 - sideLength * rows / 2 + sideLength * (rows - 1) - 1,
+    sideLength + 2,
+    sideLength + 2
   );
 
 }, 1000);
