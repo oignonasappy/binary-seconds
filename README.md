@@ -1,0 +1,3 @@
+- https://url
+- https://url?64bit
+- https://url?ms
